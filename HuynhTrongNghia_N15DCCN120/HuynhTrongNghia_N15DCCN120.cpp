@@ -2543,6 +2543,20 @@ int CountNodeKQ_Mon(NodeKQ* l, string& mamh) {
 		return n;
 	}
 }
+int CountNodeKQ_SV(NodeKQ* l, string& mssv) {
+	int n = 0;
+	if (l == NULL)
+		return n;
+	else {
+		for (NodeKQ* b = l; b != NULL; b = b->next)
+		{
+			if (strcmp(b->data.maSV, mssv.c_str()) == 0) {
+				n++;
+			}
+		}
+		return n;
+	}
+}
 int CountNodeGD(NodeGD* l) {
 	int n = 0;
 	if (l == NULL)
@@ -3873,6 +3887,42 @@ void HienThiDSKQ_Mon(NodeKQ*& l, string& mamh,int& y) {
 	}
 
 }
+void HienThiDSKQ_SV(NodeKQ*& l, string& mssv) {
+	//
+	int y = 18;
+	char Masv[15];
+	strcpy_s(Masv, mssv.c_str());
+	for (NodeKQ* b = l; b != NULL; b = b->next)
+	{
+		if (strcmp(b->data.maSV,Masv) == 0) {
+			Vedau_doc(3, 28, y);
+			gotoxy(28, y + 2);
+			cout << (char)195;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)180;
+			Vedau_doc(2, 47, y);
+			Vedau_doc(2, 66, y);
+			Vedau_doc(2, 85, y);
+			Vedau_doc(2, 104, y);
+			gotoxy(29, y + 1);
+			cout << b->data.maSV;
+			gotoxy(48, y + 1);
+			cout << b->data.maMonHoc;
+			gotoxy(67, y + 1);
+			cout << b->data.lanThi;
+			gotoxy(86, y + 1);
+			cout << b->data.diem;
+			y = y + 3;
+		}
+	}
+
+}
 //
 void HienThiDSGD(NodeGD*& l) {
 
@@ -3992,7 +4042,43 @@ void HienThiDSGD(NodeGD*& l) {
 	}
 
 }
+void GiaoDienKQ() {
+	gotoxy(29, 16);
+	cout << "Ma Sinh Vien";
+	gotoxy(48, 16);
+	cout << "Ma Mon Hoc";
+	gotoxy(67, 16);
+	cout << "So Lan Thi";
+	gotoxy(86, 16);
+	cout << "Diem";
+	//
+	gotoxy(28, 14);
+	cout << (char)218;
+	Vedau(18, 196);
+	cout << (char)194;
+	Vedau(18, 196);
+	cout << (char)194;
+	Vedau(18, 196);
+	cout << (char)194;
+	Vedau(18, 196);
+	cout << (char)191;
+	Vedau_doc(2, 28, 15);
+	Vedau_doc(2, 47, 15);
+	Vedau_doc(2, 66, 15);
+	Vedau_doc(2, 85, 15);
+	Vedau_doc(2, 104, 15);
+	gotoxy(28, 17);
+	cout << (char)195;
+	Vedau(18, 196);
+	cout << (char)197;
+	Vedau(18, 196);
+	cout << (char)197;
+	Vedau(18, 196);
+	cout << (char)197;
+	Vedau(18, 196);
+	cout << (char)180;
 
+}
 
 ///
 void GhiFileCTR(NodeCTr*& ctr) {
@@ -5376,6 +5462,29 @@ int main()
 						HienThiDSKQ(kq);
 						toado_y = 18 + (CountNodeKQ(kq) * 3);
 					}
+					else if (vitri_menu6 == 4) {
+						SinhVien sinhvien;
+						Delxy(17, 13, toado_y);
+						VeKhung(40, 13, 50, 1);
+						gotoxy(41, 14);
+						cout << "Nhap Ma Sinh Vien:";
+						string mssv = "";
+						gotoxy(59, 14);
+						Nhap(mssv);
+						strcpy_s(sinhvien.maSV, mssv.c_str());
+						if (CheckMasv(sv, sinhvien) == false) {
+							Delxy(17, 13, 16);
+							GiaoDienKQ();
+							HienThiDSKQ_SV(kq, mssv);
+							toado_y = 18 + (CountNodeKQ_SV(kq, mssv) * 3);
+						}
+						else {
+							DelRow(41, 16, 50);
+							gotoxy(41, 16);
+							cout << "Ma Sinh Vien khong Ton Tai";
+							toado_y = 17;
+						}
+					}
 					else if (vitri_menu6 == 5) {
 						MonHoc monhoc;
 						Delxy(17, 13, toado_y);
@@ -5389,40 +5498,7 @@ int main()
 						if (SearchMonHoc(treemonhoc, monhoc) != NULL) {
 							int y = 18;
 							Delxy(17, 13, 16);
-							gotoxy(29, 16);
-							cout << "Ma Sinh Vien";
-							gotoxy(48, 16);
-							cout << "Ma Mon Hoc";
-							gotoxy(67, 16);
-							cout << "So Lan Thi";
-							gotoxy(86, 16);
-							cout << "Diem";
-							//
-							gotoxy(28, 14);
-							cout << (char)218;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)191;
-							Vedau_doc(2, 28, 15);
-							Vedau_doc(2, 47, 15);
-							Vedau_doc(2, 66, 15);
-							Vedau_doc(2, 85, 15);
-							Vedau_doc(2, 104, 15);
-							gotoxy(28, 17);
-							cout << (char)195;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)180;
+							GiaoDienKQ();
 							HienThiDSKQ_Mon(kq, mamh,y);
 							toado_y = y + (CountNodeKQ_Mon(kq, mamh) * 3);
 
@@ -5451,40 +5527,7 @@ int main()
 							int c = LNR_MH_Khoa(treemonhoc, treekhoa, makhoa, mhkhoa,a);
 							int y = 18;
 							Delxy(17, 13, 16);
-							gotoxy(29, 16);
-							cout << "Ma Sinh Vien";
-							gotoxy(48, 16);
-							cout << "Ma Mon Hoc";
-							gotoxy(67, 16);
-							cout << "So Lan Thi";
-							gotoxy(86, 16);
-							cout << "Diem";
-							//
-							gotoxy(28, 14);
-							cout << (char)218;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)191;
-							Vedau_doc(2, 28, 15);
-							Vedau_doc(2, 47, 15);
-							Vedau_doc(2, 66, 15);
-							Vedau_doc(2, 85, 15);
-							Vedau_doc(2, 104, 15);
-							gotoxy(28, 17);
-							cout << (char)195;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)180;
+							GiaoDienKQ();
 							for (int i = 0; i < c;i++) {
 								HienThiDSKQ_Mon(kq, mhkhoa[b->data.id].maMonHoc[i], y);
 								y += (CountNodeKQ_Mon(kq, mhkhoa[b->data.id].maMonHoc[i]) * 3 -3);
@@ -5515,40 +5558,7 @@ int main()
 							Delxy(17, 13, 16);
 							int y = 18;
 							Delxy(17, 13, 16);
-							gotoxy(29, 16);
-							cout << "Ma Sinh Vien";
-							gotoxy(48, 16);
-							cout << "Ma Mon Hoc";
-							gotoxy(67, 16);
-							cout << "So Lan Thi";
-							gotoxy(86, 16);
-							cout << "Diem";
-							//
-							gotoxy(28, 14);
-							cout << (char)218;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)194;
-							Vedau(18, 196);
-							cout << (char)191;
-							Vedau_doc(2, 28, 15);
-							Vedau_doc(2, 47, 15);
-							Vedau_doc(2, 66, 15);
-							Vedau_doc(2, 85, 15);
-							Vedau_doc(2, 104, 15);
-							gotoxy(28, 17);
-							cout << (char)195;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)197;
-							Vedau(18, 196);
-							cout << (char)180;
+							GiaoDienKQ();
 							for (int i = 0; i < m; i++) {
 								HienThiDSKQ_Mon(kq, mhh[x].maMonHoc[i], y);
 								y += (CountNodeKQ_Mon(kq, mhh[x].maMonHoc[i]) * 3 - 3);

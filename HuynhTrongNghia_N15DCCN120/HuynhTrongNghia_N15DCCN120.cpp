@@ -2633,6 +2633,47 @@ int CountNodeMonHoc(Tree_DSMH treemonhoc) {
 //	}
 //
 //}///
+int count(string masinhvien[], int n)
+{
+	int result = 0; //kết quả (số lượng các phần tử khác nhau)
+	for (int i = 0; i < n; i++)
+	{
+		// kiểm tra xem từ 0->i-1 phần tử a[i] đã xuất hiện chưa, nếu chưa thì tăng kết quả lên 1
+		bool isOccur = false;  // giả sử là chưa xuất hiện
+		for (int j = 0; j < i; j++)
+			if (masinhvien[i] == masinhvien[j])
+			{
+				isOccur = true; // đã xuất hiện rồi
+				break;
+			}
+		if (!isOccur) result++; // tăng kết quả lên 1
+	}
+	return result;
+}
+int SVtheoMH(NodeKQ*& l, Tree_DSMH& b, string& mamh, SVTheoMon svtheomon[])
+{
+	MonHoc monhoc;
+	int SLSV = 0;
+	if (l == NULL) {
+		return SLSV;
+	}
+	else {
+		int a = 0;
+		strcpy_s(monhoc.maMonHoc, mamh.c_str());
+		DSMonHoc* d = SearchMonHoc(b, monhoc);
+		int c = d->data.id;
+		for (NodeKQ* i = l; i != NULL; i = i->next)
+		{
+			if (strcmp(i->data.maMonHoc, monhoc.maMonHoc) == 0)
+			{
+				svtheomon[c].masinhvien[a] = convertCharToString(i->data.maSV);
+				a++;
+			}
+		}
+		SLSV = count(svtheomon[c].masinhvien, a);
+	}
+	return SLSV;
+}
 int SVTheoLop(NodeSV*& l, char malop[15])
 {
 	int a = 0;
@@ -2670,10 +2711,10 @@ int SVTheoKhoa(NodeSV*& b, NodeLHoc*& l, char makhoa[15])
 	return a;
 }
 //
-int SVTheoNamHoc(NodeGD*& b, NodeSV*& c, NodeLHoc*& l, int& namhoc)
+int SVTheoNamHoc(NodeGD*& b,NodeKQ*& c, Tree_DSMH& d, SVTheoMon svtheomon[],int& namhoc)
 {
 	int a = 0;
-	if (l == NULL) {
+	if (b == NULL) {
 		return a;
 	}
 	else {
@@ -2681,7 +2722,8 @@ int SVTheoNamHoc(NodeGD*& b, NodeSV*& c, NodeLHoc*& l, int& namhoc)
 		{
 			if (i->data.namHoc == namhoc)
 			{
-				a += SVTheoKhoa(c, l, i->data.maKhoa);
+				e = convertCharToString(i->data.maMonHoc);
+				a += SVtheoMH(c,d, e, svtheomon);
 			}
 
 		}
@@ -3108,49 +3150,10 @@ NodeCTr* InfoMaCtr(NodeCTr*& l, ChuongTrinh x)
 }
 
 //
-int count(string masinhvien[], int n)
-{
-	int result = 0; //kết quả (số lượng các phần tử khác nhau)
-	for (int i = 0; i < n; i++)
-	{
-		// kiểm tra xem từ 0->i-1 phần tử a[i] đã xuất hiện chưa, nếu chưa thì tăng kết quả lên 1
-		bool isOccur = false;  // giả sử là chưa xuất hiện
-		for (int j = 0; j < i; j++)
-			if (masinhvien[i] == masinhvien[j])
-			{
-				isOccur = true; // đã xuất hiện rồi
-				break;
-			}
-		if (!isOccur) result++; // tăng kết quả lên 1
-	}
-	return result;
-}
+
 //
 
-int SVtheoMH(NodeKQ*& l, Tree_DSMH& b, string& mamh, SVTheoMon svtheomon[])
-{
-	MonHoc monhoc;
-	int SLSV = 0;
-	if (l == NULL) {
-		return SLSV;
-	}
-	else {
-		int a = 0;
-		strcpy_s(monhoc.maMonHoc, mamh.c_str());
-		DSMonHoc* d = SearchMonHoc(b, monhoc);
-		int c = d->data.id;
-		for (NodeKQ* i = l; i != NULL; i = i->next)
-		{
-			if (strcmp(i->data.maMonHoc, monhoc.maMonHoc) == 0)
-			{
-				svtheomon[c].masinhvien[a] = convertCharToString(i->data.maSV);
-				a++;
-			}
-		}
-		SLSV = count(svtheomon[c].masinhvien, a);
-	}
-	return SLSV;
-}
+
 //
 boolean CheckMasv(NodeSV*& l, SinhVien x)
 {
@@ -5857,8 +5860,12 @@ int main()
 						NhapNamhoc_GD(Namhoc);
 						giangday.namHoc = Namhoc;
 						if (CheckNamHoc(gd, giangday) == false) {
+							//
+							int n = DSMH_Nam(gd, giangday, mhh);
+							int m = DSMH_N_RG(mhh, n, Namhoc) + 1;
+							//
 							gotoxy(41, 16);
-							cout << "So sinh vien cua nam hoc " << Namhoc << " la: " << SVTheoNamHoc(gd, sv, nodelh, Namhoc);
+							cout << "So sinh vien cua nam hoc " << Namhoc << " la: " << SVTheoNamHoc(gd, kq, treemonhoc,svtheomon, Namhoc);
 						}
 						else {
 							DelRow(41, 16, 50);

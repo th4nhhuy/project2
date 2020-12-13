@@ -3214,9 +3214,8 @@ int index_MHMax(MH_Nam mh[], int& n, NodeKQ*& l, Tree_DSMH& b, int& x, SVTheoMon
 			max = SVtheoMH(l, b, mh[x].maMonHoc[i], svtheomon);
 			a = i;
 		}
-		return a;
 	}
-
+	return a;
 }
 //
 int DSMH_Nam(NodeGD*& l, GiangDay& x, MH_Nam mhh[])

@@ -2722,8 +2722,8 @@ int SVTheoNamHoc(NodeGD*& b,NodeKQ*& c, Tree_DSMH& d, SVTheoMon svtheomon[],int&
 		{
 			if (i->data.namHoc == namhoc)
 			{
-				e = convertCharToString(i->data.maMonHoc);
-				a += SVtheoMH(c,d, e, svtheomon);
+				string z = convertCharToString(i->data.maMonHoc);
+				a += SVtheoMH(c,d, z, svtheomon);
 			}
 
 		}
@@ -3726,6 +3726,63 @@ void HienThiDSSV(NodeSV*& l) {
 		gotoxy(106, y + 1);
 		cout << b->data.maLop;
 		y = y + 3;
+	}
+
+}
+///
+void HienThiDSSV_LH(NodeSV*& l, char malop[15],int& y) {
+	gotoxy(29, 16);
+	cout << "Ma Sinh Vien";
+	gotoxy(48, 16);
+	cout << "Ho Va Ten";
+	gotoxy(67, 16);
+	cout << "Nam Sinh";
+	gotoxy(86, 16);
+	cout << "Gioi Tinh";
+	gotoxy(106, 16);
+	cout << "Ma Lop";
+	//
+	GiaoDienKhung2();
+	//
+	SapXepTheoMaSV(l);
+	for (NodeSV* b = l; b != NULL; b = b->next)
+	{
+		if (strcmp(b->data.maLop, malop) == 0) {
+			string a = "";
+			Vedau_doc(3, 28, y);
+			gotoxy(28, y + 2);
+			cout << (char)195;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)197;
+			Vedau(18, 196);
+			cout << (char)180;
+			Vedau_doc(2, 47, y);
+			Vedau_doc(2, 66, y);
+			Vedau_doc(2, 85, y);
+			Vedau_doc(2, 104, y);
+			Vedau_doc(2, 123, y);
+			gotoxy(29, y + 1);
+			cout << b->data.maSV;
+			gotoxy(48, y + 1);
+			cout << b->data.hoTen;
+			gotoxy(67, y + 1);
+			cout << b->data.namSinh;
+			if (b->data.gioitinh == TRUE) {
+				a = "Nam";
+			}
+			else a = "Nu";
+			gotoxy(86, y + 1);
+			cout << a;
+			gotoxy(106, y + 1);
+			cout << b->data.maLop;
+			y = y + 3;
+		}
 	}
 
 }
@@ -4904,6 +4961,31 @@ int main()
 						HienThiDSSV(sv);
 						toado_y = 18 + (CountNodeSV(sv) * 3);
 					}
+					else if(vitri_menu3 == 7)
+					{
+						LopHoc lophoc;
+						Delxy(17, 13, toado_y);
+						VeKhung(40, 13, 50, 1);
+						gotoxy(41, 14);
+						cout << "Nhap Ma Lop:";
+						string malop = "";
+						gotoxy(53, 14);
+						Nhap(malop);
+						int y = 18;
+						strcpy_s(lophoc.maLop, malop.c_str());
+						if (CheckMaLH(nodelh,lophoc) == false){
+							Delxy(17, 13, 16);
+							HienThiDSSV_LH(sv, lophoc.maLop, y);
+							toado_y = y;
+
+						}
+						else {
+							DelRow(41, 16, 50);
+							gotoxy(41, 16);
+							cout << "Ma Lop Hoc khong Ton Tai";
+							toado_y = 17;
+						}
+					}
 					break;
 				}
 				if (trangthai == ESC) {
@@ -5532,7 +5614,10 @@ int main()
 							GiaoDienKQ();
 							for (int i = 0; i < c;i++) {
 								HienThiDSKQ_Mon(kq, mhkhoa[b->data.id].maMonHoc[i], y);
-								y += (CountNodeKQ_Mon(kq, mhkhoa[b->data.id].maMonHoc[i]) * 3 -3);
+								int count = CountNodeKQ_Mon(kq, mhkhoa[b->data.id].maMonHoc[i]);
+								if (count != 0) {
+									y += (count * 3 - 3);
+								}
 							}
 							toado_y = y;
 						}
@@ -5563,7 +5648,10 @@ int main()
 							GiaoDienKQ();
 							for (int i = 0; i < m; i++) {
 								HienThiDSKQ_Mon(kq, mhh[x].maMonHoc[i], y);
-								y += (CountNodeKQ_Mon(kq, mhh[x].maMonHoc[i]) * 3 - 3);
+								int count = CountNodeKQ_Mon(kq, mhh[x].maMonHoc[i]);
+								if (count != 0) {
+									y += (count * 3 - 3);
+								}
 							}
 							toado_y = y;
 

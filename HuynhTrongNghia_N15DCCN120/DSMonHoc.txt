@@ -1,9 +1,6 @@
-1
-1
-KHOA01
-2
-2
-KHOA02
-3
-1
-KHOA01
+int1306
+cau truc giai thuat
+cntt
+int1307
+phan tan
+cntt
